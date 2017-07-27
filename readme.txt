@@ -1,8 +1,7 @@
-Property Finder Test
+PROPERTY FINDER TEST
 
 
-These test are based on Java using Jsoup library.
-https://jsoup.org/
+These test are based on Java using, Jsoup library  ( https://jsoup.org/ ).
 
 
 Jsoup is a Java library for working with real-world HTML.
@@ -25,12 +24,12 @@ This testcase:
     than using Jsoup API,
     it extracts info about address, number of bedrooms, and price.
 
- 2. after with help of Java Streams the info is filtered according rules:
+ 2. after with help of Java Streams, the info is filtered according next conditions:
      - location: THE PEARL
      - bedrooms: minimum 3BEDS and maximum 7BEDS
      - results are sorted in reverse order
 
- 3. Results are save it in a csv file (villa.csv, in root) with format : listing title - price
+ 3. final results are save it in a csv file (villa.csv, in root), in format : listing title - price
 
 
 Test case can be run from any Java IDE.
