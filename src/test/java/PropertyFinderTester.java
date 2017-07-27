@@ -17,7 +17,7 @@ import static com.jayway.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertTrue;
 
 import utils.CSVUtils;
-
+import data.Appartment;
 
 public class PropertyFinderTester {
 
@@ -36,8 +36,8 @@ public class PropertyFinderTester {
     @Test
     public void testPropertyFinderLeastExpensive() throws IOException {
 
-        List<Apartment> appartamentList = new ArrayList<>();
-        List<Apartment> appartamentListFiltered;
+        List<Appartment> appartamentList = new ArrayList<>();
+        List<Appartment> appartamentListFiltered;
 
         // get html code of 1st page of property finder site
         Document page = Jsoup.connect("https://www.propertyfinder.ae/search?l=&q=&c=2&t=&rp=y&pf=&pt=&bf=&bt=&af=&at=&fu=0&kw=").get();
@@ -67,7 +67,7 @@ public class PropertyFinderTester {
                             .replace(",", ""));
 
             // create new appartment object
-            Apartment app = new Apartment();
+            Appartment app = new Appartment();
             app.setBedrooms(bedroomsNum);
             app.setPrice(price);
             app.setAddress(address);
@@ -83,17 +83,17 @@ public class PropertyFinderTester {
         appartamentListFiltered = appartamentList.stream()
                 .filter(addr -> addr.getAddress().contains("Marina"))
                 .filter(bdr -> bdr.getBedrooms() >= 2)
-                .sorted(Comparator.comparing(Apartment::getPrice))
+                .sorted(Comparator.comparing(Appartment::getPrice))
                 .collect(Collectors.toList());
 
         // print the results
-        for (Apartment a : appartamentListFiltered) {
+        for (Appartment a : appartamentListFiltered) {
             System.out.println(a.getAddress());
             System.out.println(a.getPrice());
         }
 
         // check if the last element of the filtered list has at least 2 bedrooms
-        Apartment last = appartamentListFiltered.stream()
+        Appartment last = appartamentListFiltered.stream()
                 .reduce((a, b) -> b)
                 .orElse(null);
 
@@ -105,8 +105,8 @@ public class PropertyFinderTester {
     @Test
     public void testPropertyFinderVilla3Beds7Beds() throws IOException {
 
-        List<Apartment> apartmentList = new ArrayList<>();
-        List<Apartment> appartmentListFiltered;
+        List<Appartment> apartmentList = new ArrayList<>();
+        List<Appartment> appartmentListFiltered;
 
         String villaToBuy = "https://www.propertyfinder.qa/search?l=&q=&c=1&t=35&pf=&pt=&bf=&bt=&af=&at=&kw=";
         String appInfoCssLocator = ".listing-content";
@@ -147,7 +147,7 @@ public class PropertyFinderTester {
             String currency = e.select(currencyCssLocator).text();
 
             // create new appartment object
-            Apartment app = new Apartment();
+            Appartment app = new Appartment();
             app.setBedrooms(bedroomsNum);
             app.setPrice(price);
             app.setAddress(address);
@@ -164,14 +164,14 @@ public class PropertyFinderTester {
         appartmentListFiltered = apartmentList.stream()
                 .filter(addr -> addr.getAddress().contains("The Pearl"))
                 .filter(bdr -> (bdr.getBedrooms() >= 3) && (bdr.getBedrooms() <= 7))
-                .sorted(Comparator.comparing(Apartment::getPrice))
+                .sorted(Comparator.comparing(Appartment::getPrice).reversed())
                 .collect(Collectors.toList());
 
         // generate csv file
         String csvFile = "villa.csv";
         FileWriter writer = new FileWriter(csvFile);
         // print the results and generate csv file
-        for (Apartment a : appartmentListFiltered) {
+        for (Appartment a : appartmentListFiltered) {
             System.out.println(a.getAddress());
             System.out.println(a.getPrice());
             System.out.println(a.getCurrency());
@@ -180,47 +180,6 @@ public class PropertyFinderTester {
         }
         writer.flush();
         writer.close();
-    }
-
-
-    class Apartment {
-        private Integer bedrooms;
-        private Integer price;
-        private String address;
-
-        public String getCurrency() {
-            return currency;
-        }
-
-        public void setCurrency(String currency) {
-            this.currency = currency;
-        }
-
-        private String currency;
-
-        public void setAddress(String address) {
-            this.address = address;
-        }
-
-        public String getAddress() {
-            return address;
-        }
-
-        public Integer getPrice() {
-            return price;
-        }
-
-        public void setPrice(Integer price) {
-            this.price = price;
-        }
-
-        public Integer getBedrooms() {
-            return bedrooms;
-        }
-
-        public void setBedrooms(Integer bedrooms) {
-            this.bedrooms = bedrooms;
-        }
     }
 
 }
