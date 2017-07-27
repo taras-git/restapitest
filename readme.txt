@@ -1,7 +1,7 @@
 PROPERTY FINDER TEST
 
 
-These test are based on Java using, Jsoup library  ( https://jsoup.org/ ).
+These test are based on Java, using Jsoup library  ( https://jsoup.org/ ).
 
 
 Jsoup is a Java library for working with real-world HTML.
