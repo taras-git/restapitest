@@ -33,3 +33,4 @@ This testcase:
 
 
 Test case can be run from any Java IDE.
+(please check clip csv_video.mov)
